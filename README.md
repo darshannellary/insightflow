@@ -1,213 +1,682 @@
-# InsightFlow
+# 📊 InsightFlow
 
-**Turn product data into decisions.**
+### Turn product data into decisions.
 
-InsightFlow is a lightweight product analytics platform for Product Managers, founders and
-growth teams. Upload a CSV of product event data and instantly get KPIs, activity trends,
-funnels, retention cohorts, feature adoption, segmentation and a RICE-based prioritization
-board — plus a deterministic "AI Product Analyst" that writes up the findings in plain
-English.
+InsightFlow is a browser-based **product analytics and decision-support tool** that transforms product event data into actionable insights.
 
-It runs entirely in your browser. There is no backend, no database, and no AI API key —
-uploaded data never leaves your machine.
+Upload a CSV containing user and product events and InsightFlow analyzes:
 
-**Live demo:** https://darshannellary.github.io/InsightFlow/
+- 📈 Product usage
+- 👥 User activity
+- 🔄 Conversion funnels
+- 🔁 Retention
+- 🧩 Feature adoption
+- 🎯 User segments
+- 💰 Revenue
+- 🧠 Automated product insights
+- 📌 Feature prioritization using RICE
 
-<!-- Screenshots: add PNGs to a /docs or /screenshots folder and reference them here, e.g.
-![Dashboard](./screenshots/dashboard.png) -->
+The application is designed to help Product Managers answer a simple question:
 
-## Product overview
+> **What is happening in my product, why might it be happening, and what should I do next?**
 
-Most "AI analytics" demos either fake the AI or need a backend and an API key to work. InsightFlow
-does neither. The core idea:
+---
 
-```
-UPLOAD DATA → UNDERSTAND PRODUCT → DISCOVER INSIGHTS → PRIORITIZE ACTIONS
-```
+## 🚀 Live Demo
 
-Everything — CSV parsing, metric computation, cohort analysis, and "AI" insight generation —
-happens client-side with plain TypeScript and statistics. That makes it free to run, safe for
-sensitive data, and fast even without a server round-trip.
+**Try InsightFlow:**
 
-## Features
+https://darshannellary.github.io/insightflow/
 
-- **Dashboard** — KPI cards (users, activation, conversion, retention, revenue, ARPU) with
-  period-over-period change, a DAU/WAU/New Users/Events trend chart, and a "Where should I
-  focus?" panel that surfaces the top 3 auto-detected opportunities.
-- **Analytics** — active vs. new user trends and a full event-type breakdown.
-- **Funnels** — a Signup → Onboarding → Feature Usage → Purchase funnel with per-step
-  conversion and drop-off, and the biggest bottleneck called out automatically.
-- **Retention** — a weekly cohort retention heatmap with best/worst cohort and average
-  Week 4 retention.
-- **Features** — adoption, usage frequency and conversion correlation per feature, with
-  "high adoption / high correlation" and "low adoption / high correlation" opportunity badges.
-- **Segments** — breakdowns by plan, device and country (whichever columns exist) with
-  auto-generated comparison sentences like *"Desktop users convert 2.4× more often than
-  mobile users."*
-- **Priorities** — a RICE (Reach × Impact × Confidence ÷ Effort) prioritization board, stored
-  in `localStorage` so it survives a refresh independent of whatever dataset is loaded.
-- **AI Product Analyst** — a rule-based insight engine plus a keyword-driven "Ask your product
-  data" box.
+**GitHub Repository:**
 
-The UI adapts to whatever columns are actually present — if a dataset has no `revenue` column,
-revenue-dependent views explain why they're unavailable instead of rendering a broken chart.
+https://github.com/darshannellary/insightflow
 
-## How it works
+---
 
-1. **CSV in.** [PapaParse](https://www.papaparse.com/) parses the file in-browser. The only
-   required column is `user_id`; everything else (`event`, `timestamp`, `plan`, `device`,
-   `country`, `revenue`) is optional and detected automatically.
-2. **A capability flag set.** `deriveCapabilities()` inspects the parsed headers and event
-   names once, producing flags like `hasRevenue`, `hasOnboarding`, `hasFeatureEvents`. Every
-   page reads these flags to decide what it can safely render.
-3. **A pure analytics layer.** `src/analytics/*` contains dependency-free functions —
-   `metrics.ts`, `funnel.ts`, `retention.ts`, `segmentation.ts`, `featureAnalysis.ts`,
-   `rice.ts` — each taking the parsed dataset and returning plain computed data. None of them
-   touch React or the DOM, so they're easy to reason about and reuse across pages.
-4. **A rule-based insight engine.** `insightEngine.ts` runs a registry of independent rule
-   functions (conversion gaps, retention drops, funnel bottlenecks, feature correlations,
-   revenue gaps, activity trends) over the computed metrics and emits structured `Insight`
-   objects — severity, finding, evidence, recommendation.
+## ✨ Features
 
-## AI Product Analyst
+### 📤 CSV Product Data Import
 
-There is no LLM anywhere in this project — no OpenAI, no Anthropic, no Gemini, no API key.
+Upload your own product event data through:
 
-The "AI Product Analyst" is a deterministic engine: a set of statistical thresholds and
-rules (e.g. *"if one segment's conversion rate is more than 20% below another's, flag a
-conversion gap"*) that runs entirely client-side and writes the result as a natural-language
-sentence. The **Ask your product data** box works the same way — it matches keywords in your
-question (`"convert"`, `"retention"`, `"feature"`, `"segment"`, `"revenue"`...) to a canned
-analysis routine, not a language model. When nothing matches, it says so honestly rather than
-guessing.
+- Drag and drop
+- File selection
 
-This is a deliberate product decision, not a limitation to hide: it means the "AI" feature
-costs nothing to run, works offline, and can't leak your data anywhere.
+InsightFlow automatically analyzes the dataset and detects available:
 
-## RICE prioritization
+- Users
+- Events
+- Dates
+- Plans
+- Devices
+- Countries
+- Revenue
 
-The Priorities page implements the standard RICE framework:
+The application adapts to the available columns instead of requiring every field to be present.
 
-```
-RICE Score = (Reach × Impact × Confidence) ÷ Effort
-```
+---
 
-Add product ideas with your own Reach/Impact/Confidence/Effort estimates, and InsightFlow
-ranks them, tiers them into High/Medium/Low priority by score percentile, and persists them
-in `localStorage` — independent of whatever dataset happens to be loaded.
+### 📊 Product Dashboard
 
-## Privacy
+Get an immediate overview of product performance.
 
-- Uploaded CSVs are parsed and analyzed entirely in your browser (`Papa.parse` on a local
-  `File`, no network request).
-- There is no backend and no database. Nothing about your dataset is transmitted anywhere.
-- The active dataset lives only in memory and is cleared on refresh. The RICE board and the
-  fact that the demo dataset was last active are the only things persisted to
-  `localStorage`, and neither contains uploaded data.
+Key metrics can include:
 
-## Tech stack
+- Total Users
+- Active Users
+- New Users
+- Activation Rate
+- Conversion Rate
+- Retention
+- Revenue
+- Average Revenue Per User (ARPU)
 
-- [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) +
-  [Vite](https://vite.dev/)
-- [React Router](https://reactrouter.com/) (`HashRouter`, for clean GitHub Pages routing)
-- [Recharts](https://recharts.org/) for charts
-- [PapaParse](https://www.papaparse.com/) for CSV parsing
-- [Lucide](https://lucide.dev/) for icons
-- Plain CSS (custom properties + CSS Modules) — no UI framework, no Tailwind
+Trend indicators help identify whether important metrics are improving or declining.
 
-## Project structure
+---
 
-```
-src/
-  components/   Sidebar, Header, KPICard, InsightCard, ChartCard, DataTable,
-                EmptyState, InlineNotice, Badge, Tooltip
-  pages/        Dashboard, Analytics, Funnels, Retention, Features, Segments,
-                Priorities, AIAnalyst, Settings
-  analytics/    metrics, funnel, retention, segmentation, featureAnalysis,
-                rice, insightEngine, trends, capabilities
-  context/      DatasetContext, useAnalyticsBundle
-  data/         sampleData (seeded, deterministic demo dataset generator)
-  types/        dataset
-  utils/        csvParser, datasetBuilder, formatting, dateUtils
-  styles/       tokens.css, global.css, chartColors.ts
+### 📈 User Activity Analytics
+
+Analyze product usage over time.
+
+View trends for:
+
+- Daily Active Users
+- Weekly Active Users
+- New Users
+- Product Events
+
+Use different date ranges to understand short-term and long-term behavior.
+
+---
+
+### 🔄 Conversion Funnels
+
+Understand where users drop out of the product journey.
+
+A typical funnel might look like:
+
+```text
+Signup
+   ↓
+Onboarding Complete
+   ↓
+Feature Usage
+   ↓
+Purchase
 ```
 
-## Running locally
+InsightFlow calculates:
+
+- Users at each stage
+- Conversion rate
+- Drop-off rate
+- Largest conversion opportunity
+
+---
+
+### 🔁 Retention Analysis
+
+Understand whether users continue coming back after signup.
+
+InsightFlow creates cohort-based retention analysis using signup periods.
+
+Example:
+
+```text
+             W0     W1     W2     W3     W4
+
+Jul 01      100%   42%    31%    25%    21%
+Jul 08      100%   46%    34%    28%    23%
+Jul 15      100%   51%    38%    31%    26%
+```
+
+This makes it easier to identify:
+
+- Strong cohorts
+- Weak cohorts
+- Retention deterioration
+- Changes in user engagement
+
+---
+
+### 🧩 Feature Analytics
+
+Automatically identify feature-related events and analyze:
+
+- Feature adoption
+- Unique users
+- Usage frequency
+- Adoption trends
+- Relationship with conversion
+
+Example:
+
+```text
+Feature             Users       Adoption
+
+Dashboard           4,821       62%
+Reports             2,103       27%
+Export                843       11%
+```
+
+InsightFlow can highlight features with:
+
+- High adoption
+- Low adoption
+- Strong conversion relationships
+- Potential product opportunities
+
+---
+
+### 👥 Segment Analysis
+
+Compare product performance across different user segments.
+
+Depending on the uploaded dataset, InsightFlow can analyze dimensions such as:
+
+- Device
+- Country
+- Plan
+- Other available attributes
+
+Example:
+
+```text
+DEVICE
+
+Desktop
+Conversion: 7.4%
+
+Mobile
+Conversion: 3.8%
+```
+
+InsightFlow can surface meaningful differences between segments and identify potential opportunities.
+
+---
+
+# 🤖 AI Product Analyst
+
+One of InsightFlow's core features is the **AI Product Analyst**.
+
+The important distinction is that InsightFlow does **not require an external AI API**.
+
+There is:
+
+- ❌ No OpenAI API
+- ❌ No Anthropic API
+- ❌ No Gemini API
+- ❌ No API key
+- ❌ No backend
+- ❌ No paid AI service
+
+Instead, InsightFlow uses **local statistical analysis, pattern detection, heuristics, and rule-based reasoning** to generate product insights.
+
+The result is an AI-style product analysis experience that works entirely in the browser.
+
+### What it analyzes
+
+- Conversion
+- Activation
+- Retention
+- Feature adoption
+- Segment differences
+- Revenue
+- User activity trends
+- Funnel drop-offs
+
+Example:
+
+> **Mobile users convert at 3.8%, compared with 7.4% for desktop users.**
+
+> **Users who complete onboarding are significantly more likely to convert.**
+
+> **Week 3 retention has declined compared with earlier cohorts.**
+
+The goal is to move from:
+
+**Data → Insight → Action**
+
+---
+
+## 💡 Product Recommendations
+
+InsightFlow doesn't stop at reporting numbers.
+
+It attempts to translate analysis into potential product actions.
+
+Example:
+
+```text
+🔴 HIGH PRIORITY
+
+Mobile Conversion Gap
+
+Mobile users convert significantly less than
+desktop users.
+
+WHY IT MATTERS
+
+Mobile represents a large share of signups.
+
+RECOMMENDATION
+
+Investigate the mobile onboarding and
+checkout experience.
+```
+
+The goal is to move from:
+
+**Data → Insight → Decision**
+
+rather than simply displaying charts.
+
+---
+
+# 📌 Product Prioritization
+
+InsightFlow includes a lightweight feature prioritization system based on the **RICE framework**.
+
+Users can add product ideas and score them using:
+
+- Reach
+- Impact
+- Confidence
+- Effort
+
+The RICE score is calculated as:
+
+```text
+RICE =
+Reach × Impact × Confidence
+---------------------------
+          Effort
+```
+
+Example:
+
+| Feature | Reach | Impact | Confidence | Effort |
+|---|---:|---:|---:|---:|
+| Export Reports | 8 | 6 | 0.9 | 3 |
+| Slack Integration | 6 | 8 | 0.8 | 5 |
+| Dark Mode | 7 | 5 | 0.9 | 2 |
+
+Features can then be ranked to help determine where the product team should focus.
+
+---
+
+# 🔒 Privacy by Design
+
+InsightFlow is designed around **local data processing**.
+
+Uploaded product data is processed directly in the user's browser.
+
+```text
+CSV File
+   │
+   ▼
+Browser
+   │
+   ├── Parse Data
+   ├── Calculate Metrics
+   ├── Analyze Patterns
+   ├── Generate Insights
+   └── Render Charts
+```
+
+There is no requirement to upload product data to a server.
+
+This means product analytics can be explored without sending the dataset to an external analytics or AI service.
+
+> 🔒 **Your data stays in your browser.**
+
+---
+
+# 🧪 Sample Dataset
+
+InsightFlow includes a realistic sample product event dataset for testing the application.
+
+The sample dataset contains:
+
+- **1,200 users**
+- **8,817 product events**
+- Multiple countries
+- Mobile, desktop and tablet users
+- Free, Pro and Business plans
+- Signup events
+- Onboarding events
+- Feature usage
+- Purchases
+- Subscription renewals
+- Cancellation events
+
+The dataset intentionally contains patterns that InsightFlow can discover.
+
+Examples include:
+
+- Lower mobile conversion
+- Stronger conversion after onboarding completion
+- Higher conversion associated with Reports usage
+- Retention changes across cohorts
+- Different revenue characteristics between plans
+
+---
+
+# 🧠 How It Works
+
+The core product flow is:
+
+```text
+        Upload CSV
+             │
+             ▼
+       Parse Dataset
+             │
+             ▼
+      Detect Data Fields
+             │
+             ▼
+       Calculate Metrics
+             │
+      ┌──────┼──────┐
+      ▼      ▼      ▼
+   Funnel  Retention Segments
+      │      │      │
+      └──────┼──────┘
+             ▼
+      Detect Patterns
+             │
+             ▼
+     Generate Insights
+             │
+             ▼
+    Recommend Actions
+             │
+             ▼
+      Product Decisions
+```
+
+The analytics engine works directly against the uploaded dataset.
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| **React** | Frontend application |
+| **Vite** | Development and build tooling |
+| **JavaScript / TypeScript** | Application logic |
+| **CSS** | UI and responsive design |
+| **Papa Parse** | CSV parsing |
+| **Chart.js / Recharts** | Data visualization |
+| **LocalStorage** | Local preference / prioritization persistence |
+| **GitHub Pages** | Deployment |
+| **Claude Code** | AI-assisted development |
+| **Cursor** | AI-assisted coding and iteration |
+
+The application does not require a backend or paid API.
+
+---
+
+# 📁 Project Structure
+
+A typical project structure is:
+
+```text
+insightflow/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── analytics/
+│   ├── data/
+│   └── utils/
+│
+├── public/
+│
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+The application separates UI components, pages, analytics logic, sample data, and utility functions to keep the codebase maintainable.
+
+---
+
+# 💻 Running Locally
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/darshannellary/insightflow.git
+```
+
+## 2. Enter the project directory
+
+```bash
+cd insightflow
+```
+
+## 3. Install dependencies
 
 ```bash
 npm install
-npm run dev       # start the dev server
-npm run build      # type-check + production build to dist/
-npm run preview    # preview the production build locally
-npm run lint        # ESLint
 ```
 
-## Sample dataset
+## 4. Start the development server
 
-Clicking **Try Sample Dataset** generates ~1,200 users and 6,000+ events entirely in-browser,
-using a seeded pseudo-random generator (`src/data/sampleData.ts`) — the same seed always
-produces the same dataset, so it's reproducible and reviewable as ordinary code rather than a
-static file.
+```bash
+npm run dev
+```
 
-The generator deliberately embeds several realistic product patterns so the insight engine has
-something to find:
+Then open the local URL shown in the terminal.
 
-1. Mobile users convert roughly half as often as desktop users.
-2. Users who complete onboarding convert about 3× more often.
-3. One feature (Dashboard) has high adoption *and* correlates with higher conversion; another
-   (Export) has low adoption.
-4. Purchase activity dips sharply during one calendar week.
-5. The cohort that signed up in week 3 retains noticeably worse than its neighbors.
-6. Enterprise-plan users generate a much higher ARPU than Pro users.
-7. Repeat purchasers generate substantially more revenue than one-time purchasers.
+---
 
-## Design decisions
+# 🏗️ Production Build
 
-- **No LLM, by design.** Faking an "AI" feature with a hidden LLM call would misrepresent how
-  the product works and require an API key/backend — both explicitly out of scope. A
-  transparent rule engine keeps the product honest and actually free to run.
-- **Adaptive, not fragile, UI.** Rather than assuming every CSV has every column, the app
-  computes a capability flag set once and every page checks it, degrading gracefully with an
-  explanatory message instead of a broken chart.
-- **Plain CSS over a UI framework.** The design system is a single `tokens.css` file of CSS
-  custom properties (colors, spacing, type scale) shared by components and by Recharts (via
-  `var(--chart-1)` etc. passed directly as SVG fill/stroke values), avoiding an unnecessary
-  dependency for a project this size.
-- **React Context over a state library.** There's exactly one shared, slowly-changing resource
-  (the loaded dataset), so a context + a memoized derived-analytics hook is enough — no
-  Redux/Zustand needed.
+Create a production build:
 
-## Vibe coding
+```bash
+npm run build
+```
 
-This project was built as a "vibe coding" exercise — an exploration of building a real,
-non-trivial product end-to-end through conversational AI-assisted development, using
-**Claude Code** (for architecture, implementation, and the analytics/insight engine logic) and
-**Cursor** (for iterative editing). All analysis logic, insight rules, and the sample-data
-generator were reviewed and reasoned about explicitly rather than accepted as opaque output —
-the goal was to practice directing AI tools toward a coherent product outcome, not to skip
-product or engineering judgment.
+Preview the production build locally:
 
-## What I learned
+```bash
+npm run preview
+```
 
-- Designing a rule-based "insight engine" forces you to be precise about what a metric
-  actually means (e.g., what counts as "retention," what window a "conversion rate" is
-  computed over) in a way that's easy to hand-wave when you can lean on an LLM instead.
-- Building the sample-data generator to *deliberately* contain discoverable patterns is a
-  genuinely useful technique for testing analytics logic end-to-end — it turned into the best
-  regression test for the insight engine.
-- An adaptive UI (driven by a single capability-flags object) is a small amount of extra
-  design work up front that pays for itself immediately the first time a real-world CSV is
-  missing a column.
+---
 
-## Future improvements
+# 🌐 Deployment
 
-- Multiple/custom funnels (today's funnel is a single default sequence).
-- CSV column mapping UI, for datasets that use different header names.
-- Exporting insights or the RICE board as PDF/CSV.
-- Saved views / comparison between two uploaded datasets.
-- Optional dark theme.
+InsightFlow is deployed as a static application using **GitHub Pages**.
 
-## Author
+**Live application:**
 
-Built by Darshan Nellary.
-GitHub: [github.com/darshannellary](https://github.com/darshannellary)
+https://darshannellary.github.io/insightflow/
+
+**Repository:**
+
+https://github.com/darshannellary/insightflow
+
+---
+
+# 🎨 Product Design Philosophy
+
+InsightFlow was designed around a simple product principle:
+
+> **Analytics should help teams make decisions, not just look at dashboards.**
+
+Many analytics tools present large amounts of data but leave the Product Manager to determine what matters.
+
+InsightFlow attempts to shorten that path:
+
+```text
+Data
+ ↓
+Metrics
+ ↓
+Patterns
+ ↓
+Insights
+ ↓
+Recommendations
+ ↓
+Product Decisions
+```
+
+The interface therefore emphasizes:
+
+- Clarity
+- Actionability
+- Context
+- Simplicity
+- Trust
+- Privacy
+
+---
+
+# 🤖 Built While Learning Vibe Coding
+
+InsightFlow was built as part of my exploration of **vibe coding and AI-assisted software development**.
+
+I used:
+
+- **Claude Code**
+- **Cursor**
+
+The project was an opportunity to explore how AI-assisted development could be used to build a complete product rather than simply generating isolated UI components.
+
+The development process followed:
+
+```text
+Idea
+ ↓
+Product Definition
+ ↓
+Architecture
+ ↓
+Prototype
+ ↓
+Build
+ ↓
+Test
+ ↓
+Debug
+ ↓
+Iterate
+ ↓
+Deploy
+```
+
+A key design decision was deliberately avoiding paid AI APIs.
+
+Instead, I built a local product intelligence engine using statistical analysis and rule-based reasoning.
+
+This keeps the application:
+
+- Free to operate
+- Private
+- Easy to deploy
+- Easy to demonstrate
+- Independent of API keys
+
+---
+
+# 📚 What I Learned
+
+Building InsightFlow helped me explore:
+
+- Product analytics
+- Event-based data modeling
+- CSV parsing
+- Data transformation
+- Statistical analysis
+- Conversion funnels
+- Cohort retention
+- Feature adoption
+- User segmentation
+- Revenue analytics
+- Product prioritization
+- RICE scoring
+- Rule-based reasoning
+- Data visualization
+- React application architecture
+- Responsive dashboard design
+- Local-first application architecture
+- Browser-based data processing
+- AI-assisted software development
+- GitHub Pages deployment
+
+---
+
+# 🔮 Future Improvements
+
+Potential future improvements include:
+
+- [ ] Real LLM integration when API economics make sense
+- [ ] More advanced statistical analysis
+- [ ] Automatic anomaly detection
+- [ ] A/B test analysis
+- [ ] Experiment tracking
+- [ ] Customer journey visualization
+- [ ] More advanced cohort analysis
+- [ ] Custom funnel creation
+- [ ] Saved dashboards
+- [ ] Exportable reports
+- [ ] PDF report generation
+- [ ] CSV export
+- [ ] More prioritization frameworks
+- [ ] MoSCoW prioritization
+- [ ] Value vs. Effort matrix
+- [ ] Opportunity scoring
+- [ ] Product roadmap visualization
+- [ ] More advanced natural-language querying
+
+---
+
+# 🚧 Current Limitations
+
+InsightFlow intentionally operates without an external AI API.
+
+The **AI Product Analyst** therefore uses:
+
+- Statistical analysis
+- Pattern detection
+- Heuristics
+- Rule-based reasoning
+- Natural-language templates
+
+It is not a general-purpose conversational AI model.
+
+This is an intentional MVP trade-off designed around:
+
+**Zero API cost + privacy + simple deployment.**
+
+---
+
+# 👨‍💻 Author
+
+**Darshan Nellary**
+
+Product Manager | FinTech & Payments | AI-Assisted Product Development
+
+**GitHub:**
+
+https://github.com/darshannellary
+
+---
+
+# 📄 License
+
+This project currently does not specify a license.
+
+---
+
+> **Note:** This README uses standard GitHub Markdown with no custom dark-background styling. GitHub controls the page background according to the viewer's GitHub appearance setting.

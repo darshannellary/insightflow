@@ -1,0 +1,122 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.metricToggle {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.metricButton,
+.metricActive {
+  border: none;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  padding: 6px 12px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-right: 1px solid var(--color-border);
+}
+
+.metricButton:last-child,
+.metricActive:last-child {
+  border-right: none;
+}
+
+.metricButton:hover {
+  background: var(--color-surface-hover);
+}
+
+.metricActive {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.decisionCenter {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.decisionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  color: var(--color-primary);
+}
+
+.decisionHeader h2 {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.opportunityList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.opportunityItem {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.opportunityTitle {
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.opportunityMeta {
+  display: flex;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.opportunityLabel {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-faint);
+}
+
+.opportunityEvidence {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.opportunityAction {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-top: auto;
+}
+
+.opportunityAction svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}

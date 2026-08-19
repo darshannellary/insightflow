@@ -1,0 +1,42 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+}
+
+.featureName {
+  font-weight: 600;
+}
+
+.badgeStack {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.noOpportunity {
+  color: var(--color-text-faint);
+}
+
+.trend {
+  display: inline-flex;
+}
+
+.trend.up {
+  color: var(--color-positive);
+}
+
+.trend.down {
+  color: var(--color-negative);
+}
+
+.trend.flat {
+  color: var(--color-text-faint);
+}

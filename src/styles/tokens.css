@@ -1,0 +1,75 @@
+:root {
+  /* Brand */
+  --color-primary: #6366f1;
+  --color-primary-dark: #4338ca;
+  --color-primary-light: #eef2ff;
+  --color-primary-border: #c7d2fe;
+
+  /* Neutrals */
+  --color-bg: #f8f9fb;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f4f5f8;
+  --color-border: #e4e6ec;
+  --color-border-strong: #d3d6de;
+  --color-text: #14161f;
+  --color-text-muted: #6b7080;
+  --color-text-faint: #9498a6;
+
+  /* Semantic */
+  --color-positive: #16a34a;
+  --color-positive-bg: #f0fdf4;
+  --color-positive-border: #bbf7d0;
+  --color-negative: #dc2626;
+  --color-negative-bg: #fef2f2;
+  --color-negative-border: #fecaca;
+  --color-warning: #d97706;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fde68a;
+  --color-info: #2563eb;
+  --color-info-bg: #eff6ff;
+  --color-info-border: #bfdbfe;
+
+  /* Chart qualitative palette */
+  --chart-1: #6366f1;
+  --chart-2: #06b6d4;
+  --chart-3: #f59e0b;
+  --chart-4: #ec4899;
+  --chart-5: #22c55e;
+  --chart-6: #8b5cf6;
+  --chart-grid: #edeef2;
+  --chart-axis: #9498a6;
+
+  /* Typography */
+  --font-sans:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Radius / shadow */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(20, 22, 31, 0.06);
+  --shadow-md: 0 4px 16px rgba(20, 22, 31, 0.08);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --header-height: 64px;
+}

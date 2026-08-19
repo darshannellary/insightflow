@@ -11,7 +11,7 @@ English.
 It runs entirely in your browser. There is no backend, no database, and no AI API key —
 uploaded data never leaves your machine.
 
-**Live demo:** https://darshannellary.github.io/insightflow/
+**Live demo:** https://darshannellary.github.io/InsightFlow/
 
 <!-- Screenshots: add PNGs to a /docs or /screenshots folder and reference them here, e.g.
 ![Dashboard](./screenshots/dashboard.png) -->
